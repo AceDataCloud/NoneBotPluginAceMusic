@@ -11,6 +11,9 @@ from pydantic import BaseModel, Field, SecretStr
 from .client import SERVICES, create_song, read_song
 
 
+APPLICATIONS_URL = "https://platform.acedata.cloud/console/applications?utm_source=nonebot&utm_medium=referral&utm_campaign=evergreen"
+
+
 class Config(BaseModel):
     acemusic_api_token: SecretStr | None = None
     ace_media_tokens: dict[str, SecretStr] = Field(default_factory=dict)
@@ -55,7 +58,7 @@ async def submit(event: PrivateMessageEvent, command: tuple[str, ...] = Command(
         await generate.finish("用法：/媒体创作 服务 提示词（消耗 Credits）。可选服务：" + "、".join(SERVICES))
     token = token_value(service)
     if not token:
-        await generate.finish("请为所选服务配置 ACE_MEDIA_TOKENS；ACE Music 也支持 ACEMUSIC_API_TOKEN。")
+        await generate.finish("请为所选服务配置 ACE_MEDIA_TOKENS；ACE Music 也支持 ACEMUSIC_API_TOKEN。\n申请令牌：" + APPLICATIONS_URL)
     event_key = f"nonebot-v11:{event.self_id}:{event.user_id}:{event.message_id}:{event.time}"
     key = hashlib.sha256(event_key.encode()).hexdigest()
     try:
@@ -76,7 +79,7 @@ async def retrieve(command: tuple[str, ...] = Command(), args: Message = Command
         await lookup.finish("用法：/媒体任务 服务 原任务ID。可选服务：" + "、".join(SERVICES))
     token = token_value(service)
     if not token:
-        await lookup.finish("请为所选服务配置 ACE_MEDIA_TOKENS；ACE Music 也支持 ACEMUSIC_API_TOKEN。")
+        await lookup.finish("请为所选服务配置 ACE_MEDIA_TOKENS；ACE Music 也支持 ACEMUSIC_API_TOKEN。\n申请令牌：" + APPLICATIONS_URL)
     try:
         async with httpx.AsyncClient(timeout=30) as client:
             text = await read_song(client, token, task_id, service)
