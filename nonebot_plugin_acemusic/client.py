@@ -1,9 +1,12 @@
 import httpx
 
 
-async def request(client: httpx.AsyncClient, token: str, resource: str, payload: dict) -> dict:
+async def request(client: httpx.AsyncClient, token: str, resource: str, payload: dict, *, key: str | None = None) -> dict:
+    headers = {"Authorization": "Bearer " + token}
+    if key is not None:
+        headers["Idempotency-Key"] = key
     response = await client.post("https://api.acedata.cloud/acemusic/" + resource,
-                                 headers={"Authorization": "Bearer " + token}, json=payload)
+                                 headers=headers, json=payload)
     response.raise_for_status()
     result = response.json()
     if not isinstance(result, dict):
@@ -13,8 +16,7 @@ async def request(client: httpx.AsyncClient, token: str, resource: str, payload:
 
 async def create_song(client: httpx.AsyncClient, token: str, prompt: str, key: str) -> str:
     result = await request(client, token, "audios", {"action": "generate", "custom": False,
-                           "async": True, "model": "acemusic-v1.1", "prompt": prompt,
-                           "idempotency_key": key})
+                           "async": True, "model": "acemusic-v1.1", "prompt": prompt}, key=key)
     task_id = result.get("task_id")
     if result.get("success") is False or not isinstance(task_id, str) or not task_id:
         raise ValueError("No confirmed task ID")

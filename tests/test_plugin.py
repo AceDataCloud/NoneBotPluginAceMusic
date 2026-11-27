@@ -16,7 +16,7 @@ class PluginTests(unittest.IsolatedAsyncioTestCase):
         calls = []
         def respond(req):
             body = json.loads(req.content)
-            calls.append(body)
+            calls.append((body, req.headers.get("Idempotency-Key")))
             if req.url.path.endswith("/audios"):
                 return httpx.Response(200, json={"task_id": "original"})
             return httpx.Response(200, json={"id": "original", "response": {"task_id": "original",
@@ -26,5 +26,6 @@ class PluginTests(unittest.IsolatedAsyncioTestCase):
             status = await read_song(client, "example", task)
         self.assertIn("partial_failed", status)
         self.assertIn("https://example.org/a.mp3", status)
-        self.assertEqual(calls[0]["idempotency_key"], "same-delivery")
-        self.assertEqual(calls[1], {"action": "retrieve", "id": "original"})
+        self.assertEqual(calls[0][1], "same-delivery")
+        self.assertNotIn("idempotency_key", calls[0][0])
+        self.assertEqual(calls[1], ({"action": "retrieve", "id": "original"}, None))
