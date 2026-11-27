@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "nonebot-plugin-acemusic"
-version = "0.1.0"
+version = "0.1.1"
 description = "在 NoneBot 2 的 OneBot V11 私聊中提交 ACE Music 音乐任务并查询结果"
 readme = "README.md"
 requires-python = ">=3.10"
