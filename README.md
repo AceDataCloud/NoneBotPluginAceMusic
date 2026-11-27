@@ -1,12 +1,14 @@
 # Ace 媒体创作助手
 
+<img src="https://avatars.githubusercontent.com/u/156096448?s=192&amp;v=4" alt="" width="64" height="64">
+
 在 NoneBot 2 的 OneBot V11 私聊中，把描述提交给音乐、图像或视频服务，并用原任务 ID 取回结果。命令仅向超级用户开放。创作会使用所选应用的 Credits。
 
 ```sh
 nb plugin install nonebot-plugin-acemusic
 ```
 
-在 [Ace 应用](https://platform.acedata.cloud/console/applications) 中开通要用的服务。在机器人的环境文件中设置各服务的应用令牌，填入 NoneBot 的 `SUPERUSERS` 并启用 OneBot V11 适配器，再启动机器人。插件可以在未配置服务时加载。
+在 [Ace 应用](https://platform.acedata.cloud/console/applications?utm_source=opensource&utm_medium=referral&utm_campaign=evergreen) 中开通要用的服务。在机器人的环境文件中设置各服务的应用令牌，填入 NoneBot 的 `SUPERUSERS` 并启用 OneBot V11 适配器，再启动机器人。插件可以在未配置服务时加载。
 
 ```dotenv
 ACE_MEDIA_TOKENS='{"suno":"your-suno-token","nano-banana":"your-image-token","seedance":"your-video-token"}'
