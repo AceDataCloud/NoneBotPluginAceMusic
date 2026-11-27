@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling>=1.26,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nonebot-plugin-acemusic"
+version = "0.1.0"
+description = "在 NoneBot 2 的 OneBot V11 私聊中提交 ACE Music 音乐任务并查询结果"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{name = "Ace Data Cloud Dev", email = "dev@acedata.cloud"}]
+dependencies = ["nonebot2>=2.3,<3", "nonebot-adapter-onebot>=2.4,<3", "httpx>=0.25,<1"]
+
+[project.urls]
+Homepage = "https://github.com/AceDataCloud/NoneBotPluginAceMusic"
+Issues = "https://github.com/AceDataCloud/NoneBotPluginAceMusic/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["nonebot_plugin_acemusic"]
